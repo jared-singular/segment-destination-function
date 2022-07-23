@@ -28,7 +28,7 @@ async function onTrack(event, settings) {
 	    _idfa = event.context.traits.singularIDFA ||
 		    event.context.device.advertisingId ||
 		    '',
-	    _idfv = event.context.traits.singular.idfv || event.context.device.id || '';
+	    _idfv = event.context.traits.singularIDFV || event.context.device.id || '';
 
 	// Singular Device Identifiers
 	// Need to set in the App using Segment SDK once the Segement SDK Intializes. Store values in the context.singular.
