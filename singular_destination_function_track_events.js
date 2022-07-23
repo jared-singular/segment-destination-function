@@ -25,8 +25,7 @@ async function onTrack(event, settings) {
 
 	// Advertising Device Identifiers
 	let _gaid = event.context.device.advertisingId || '',
-	    _andi = event.context.device.id || '',
-	    _idfa = event.context.traits.singular.idfa ||
+	    _idfa = event.context.traits.singularIDFA ||
 		    event.context.device.advertisingId ||
 		    '',
 	    _idfv = event.context.traits.singular.idfv || event.context.device.id || '';
@@ -39,10 +38,10 @@ async function onTrack(event, settings) {
 	// Get Android AppSetID Identifier (ASID) see: https://developer.android.com/training/articles/app-set-id
 	// Get Singular Web SDK Identifier (SDID) see: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually
 
-	let _asid = event.context.traits.singular.appSetId || '',
-	    _amid = event.context.traits.singular.amazonId || '',
-	    _sdid = event.context.traits.singular.webSDID || '',
-	    _webBundleID = event.context.traits.singular.webBundleId || '';
+	let _asid = event.context.traits.singularASID || '',
+	    _amid = event.context.traits.singularAMID || '',
+	    _sdid = event.context.traits.singularSDID || '',
+	    _webBundleID = event.context.traits.singularWebBundleId || '';
 
 	// Singular Event Timestamp
 	// Used to backdate the actual event
@@ -124,7 +123,6 @@ async function onTrack(event, settings) {
 			}
 			params['i'] = event.context.app.namespace || 'segment.unknown.bundleId';
 			params['p'] = 'Android';
-			params['andi'] = _andi || '';
 		} else if (_p.toLowerCase() === 'ios') {
 			// Learn more at https://segment.com/docs/connections/sources/catalog/libraries/mobile/ios/#ad-tracking-and-idfa
 			if (_idfa && _idfa.length == 36) {
