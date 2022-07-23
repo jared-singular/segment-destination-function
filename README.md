@@ -5,6 +5,9 @@ This solution is used for Hybrid Integrations with Segment and enables Segment t
 > **Note**
 > Being a custom solution, this code snippet is provided as a working example and allows the developer full control to update or modify the content and behavior as desired. Due to theflexibility of this solution, the Singular Support team is not responsible for maintenance of this code. The developer implementing this solution must consult the Segment and Singular documentation to troubleshoot issues if they arise.
 
+> **Warning**
+> Due to the Hybrid nature of this integration it is recommended to disable the Segment *Application Lifecycle Events*. These are disabled in the Initialization of the Segment SDK. The Singular SDK will automatically track Sessions and these events are not needed.
+
 - Coming Soon: Enabling the passing of Web events to Singular.
 
 ### Requirements
@@ -43,22 +46,23 @@ CODE: Obj-C
 ##### Android
 CODE: Java
 ```Java
-// Add the following code to your didFinishLaunchingWithOptions entry point:
-SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENTKEY];
-    configuration.trackApplicationLifecycleEvents = NO; // Enable this to record certain application events automatically!
-    configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
-    [SEGAnalytics setupWithConfiguration:configuration];
+// We recommend initializing the client in your Application subclass.
+// Read More here: https://segment.com/docs/connections/sources/catalog/libraries/mobile/android/#step-2-initialize-the-client
+Analytics analytics = new Analytics.Builder(getApplicationContext(), Constants.SEGMENTKEY)
+                .recordScreenViews() // Enable this to record screen views automatically!
+                .build();
 ```
     
-Add the following code to your App Immediately after the Singular SDK is Initialized. This code will store the current Device Advertising Identifiers in the Segment Identify Traits in a Singular element.
+Add the following code to your App Immediately after obtaining your Device Identifiers. This code will store the current Device Advertising Identifiers in the Segment Identify Traits in a Singular element. Retreive the Android AppSetID, and Google Advertising ID in the App prior to Segment or Singular SDK Initialization. 
+- See How to retreive the AppSetId: https://developer.android.com/training/articles/app-set-id
+- See how to Retrieve the Google Advertising Id: https://developer.android.com/training/articles/ad-id
+> **Note** 
+> Obtaining these identifiers usually requires a mmethod outside of the main thread. You may need to invoke the following Segment code in the same method.
 
 CODE: Java
 ```Java
-// Set Segment Identify Traits for Singular
-    NSString *segmentAnonymousId = [[SEGAnalytics sharedAnalytics] getAnonymousId];
-    NSLog(@"Segment AnonymousId: %@", segmentAnonymousId);
-    [[SEGAnalytics sharedAnalytics]
-     identify: nil traits:@{ @"singular": @{ @"idfa": self.s_idfa, @"idfv": self.s_idfv, @"attStatus": self.att_state}}];
+Analytics.with(getApplicationContext()).identify(new Traits().putValue("singularGAID",GAID));
+Analytics.with(getApplicationContext()).identify(new Traits().putValue("singularASID",ASID));
 ```
 
 ##### Web
