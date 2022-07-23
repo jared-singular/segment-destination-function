@@ -20,8 +20,8 @@ This solution is used for Hybrid Integrations with Segment and enables Segment t
 #### Step 1
 Add support in your Mobile Apps and Web App
 
-##### iOS
-Implement the Segment iOS Library
+<details><summary>CLICK for iOS</summary>
+iOS - Implement the Segment iOS Library
 
 CODE: Obj-C
 ```Obj-C
@@ -42,8 +42,11 @@ CODE: Obj-C
     [[SEGAnalytics sharedAnalytics]
      identify: nil traits:@{ @"singularIDFA": self.s_idfa, @"singularIDFV": self.s_idfv, @"singularATT": self.att_state}];
 ```
+</details>
 
-##### Android
+<details><summary>CLICK for Android</summary>
+Android - Implement the Segment Android Library
+    
 CODE: Java
 ```Java
 // We recommend initializing the client in your Application subclass.
@@ -64,8 +67,11 @@ CODE: Java
 Analytics.with(getApplicationContext()).identify(new Traits().putValue("singularGAID",GAID));
 Analytics.with(getApplicationContext()).identify(new Traits().putValue("singularASID",ASID));
 ```
+</details>
 
-##### Web
+<details><summary>CLICK for Web</summary>
+Web - Implement the Segment Javascript Library
+    
 CODE: Javascript
 ```Javascript
 // Coming soon
@@ -77,6 +83,7 @@ CODE: Javascript
 ```Javascript
 // Coming soon
 ```
+</details>
 
 #### Step 2
 Setup a Custom Destination Function in Segment
