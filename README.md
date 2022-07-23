@@ -22,7 +22,7 @@ Implement the Segment iOS Library
 
 CODE: Obj-C
 ```Obj-C
-// Add the following code to your didFinishLaunchinWithOptions entry point:
+// Add the following code to your didFinishLaunchingWithOptions entry point:
 SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENTKEY];
     configuration.trackApplicationLifecycleEvents = NO; // Enable this to record certain application events automatically!
     configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
@@ -43,7 +43,7 @@ CODE: Obj-C
 ##### Android
 CODE: Java
 ```Java
-// Add the following code to your didFinishLaunchinWithOptions entry point:
+// Add the following code to your didFinishLaunchingWithOptions entry point:
 SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENTKEY];
     configuration.trackApplicationLifecycleEvents = NO; // Enable this to record certain application events automatically!
     configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
@@ -64,7 +64,7 @@ CODE: Java
 ##### Web
 CODE: Javascript
 ```Javascript
-// Add the following code to your didFinishLaunchinWithOptions entry point:
+// Add the following code to your didFinishLaunchingWithOptions entry point:
 SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENTKEY];
     configuration.trackApplicationLifecycleEvents = NO; // Enable this to record certain application events automatically!
     configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
