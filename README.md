@@ -40,7 +40,7 @@ CODE: Obj-C
     NSString *segmentAnonymousId = [[SEGAnalytics sharedAnalytics] getAnonymousId];
     NSLog(@"Segment AnonymousId: %@", segmentAnonymousId);
     [[SEGAnalytics sharedAnalytics]
-     identify: nil traits:@{ @"singular": @{ @"idfa": self.s_idfa, @"idfv": self.s_idfv, @"attStatus": self.att_state}}];
+     identify: nil traits:@{ @"singularIDFA": self.s_idfa, @"singularIDFV": self.s_idfv, @"singularATT": self.att_state}];
 ```
 
 ##### Android
@@ -68,22 +68,14 @@ Analytics.with(getApplicationContext()).identify(new Traits().putValue("singular
 ##### Web
 CODE: Javascript
 ```Javascript
-// Add the following code to your didFinishLaunchingWithOptions entry point:
-SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENTKEY];
-    configuration.trackApplicationLifecycleEvents = NO; // Enable this to record certain application events automatically!
-    configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
-    [SEGAnalytics setupWithConfiguration:configuration];
+// Coming soon
 ```
     
 Add the following code to your App Immediately after the Singular SDK is Initialized. This code will store the current Device Advertising Identifiers in the Segment Identify Traits in a Singular element.
 
 CODE: Javascript
 ```Javascript
-// Set Segment Identify Traits for Singular
-    NSString *segmentAnonymousId = [[SEGAnalytics sharedAnalytics] getAnonymousId];
-    NSLog(@"Segment AnonymousId: %@", segmentAnonymousId);
-    [[SEGAnalytics sharedAnalytics]
-     identify: nil traits:@{ @"singular": @{ @"idfa": self.s_idfa, @"idfv": self.s_idfv, @"attStatus": self.att_state}}];
+// Coming soon
 ```
 
 #### Step 2
