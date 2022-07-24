@@ -194,59 +194,65 @@ CODE: JSON
 CODE: JSON
 ```JSON
     {
-  "anonymousId": "4BC485A2-2EFC-426B-A21F-3F2DEEE8B270",
+  "anonymousId": "1aea91af-04ce-491a-9314-2ec6e53f99c2",
   "channel": "server",
   "context": {
     "app": {
-      "build": "1",
-      "name": "Sample ObjC",
-      "namespace": "ios.sample.app.objc",
-      "version": "2.0"
+      "build": "7",
+      "name": "Singular Sample App",
+      "namespace": "net.singular.singularsampleapp",
+      "version": "1.5"
     },
     "device": {
-      "id": "6F9BF4A0-D7CC-475A-9918-54E04D67482B",
-      "manufacturer": "Apple",
-      "model": "iPhone12,3",
-      "name": "iPhone",
-      "type": "ios"
+      "adTrackingEnabled": true,
+      "advertisingId": "cfb68af8-491a-4813-8351-8a26152ab887",
+      "id": "8be045c4f1ade6d1525aeabc268720738f41a7b188ad076991622ea8b5d5796c",
+      "manufacturer": "Google",
+      "model": "sdk_gphone64_arm64",
+      "name": "emulator64_arm64",
+      "type": "android"
     },
     "ip": "104.220.18.50",
     "library": {
-      "name": "analytics-ios",
-      "version": "4.1.6"
+      "name": "analytics-android",
+      "version": "4.10.4"
     },
     "locale": "en-US",
     "network": {
+      "bluetooth": false,
       "carrier": "T-Mobile",
       "cellular": false,
       "wifi": true
     },
     "os": {
-      "name": "iOS",
-      "version": "15.6"
+      "name": "Android",
+      "version": "12"
     },
     "screen": {
-      "height": 812,
-      "width": 375
+      "density": 2.75,
+      "height": 2176,
+      "width": 1080
     },
     "timezone": "America/Los_Angeles",
-    "traits": {}
+    "traits": {
+      "anonymousId": "1aea91af-04ce-491a-9314-2ec6e53f99c2"
+    },
+    "userAgent": "Dalvik/2.1.0 (Linux; U; Android 12; sdk_gphone64_arm64 Build/S2B2.211203.006)"
   },
-  "event": "Purchase",
+  "event": "MyPurchase",
   "integrations": {},
-  "messageId": "6BCEE4A2-9741-4679-90AC-5EF897A301A2",
-  "originalTimestamp": "2022-07-24T15:53:44.725Z",
-  "projectId": "aoh5D6cBsUUDAAW5eMH3br",
+  "messageId": "31475716-38a4-4fdd-bbef-073ef67cd062",
+  "originalTimestamp": "2022-07-24T16:24:03.928Z",
+  "projectId": "23p4QQqBsqyWsnDHAsni1V",
   "properties": {
-    "singularATT": "(3) Authorized",
-    "singularIDFA": "2A4999C7-7E75-473B-A13B-8859EAE5D9C0",
-    "singularIDFV": "6F9BF4A0-D7CC-475A-9918-54E04D67482B",
-    "revenue":"29.95",
+    "singularGAID": "cfb68af8-491a-4813-8351-8a26152ab887",
+    "singularASID": "ghb32af8-491a-4813-8351-8a26152ab887",
+    "revenue":"10.99",
     "currency":"USD"
   },
-  "receivedAt": "2022-07-24T15:54:14.904Z",
-  "sentAt": "2022-07-24T15:54:14.659Z",
-  "timestamp": "2022-07-24T15:53:44.970Z",
+  "receivedAt": "2022-07-24T16:24:38.151Z",
+  "sentAt": "2022-07-24T16:24:35.407Z",
+  "timestamp": "2022-07-24T16:24:06.672Z",
   "type": "track",
   "version": 2,
   "writeKey": "YOUR WRITE KEY"
