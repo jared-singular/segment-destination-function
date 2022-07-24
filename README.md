@@ -18,7 +18,7 @@ This solution is used for Hybrid Integrations with Segment and enables Segment t
 > Due to the Hybrid nature of this integration it is recommended to disable the Segment *Application Lifecycle Events*. These are disabled in the Initialization of the Segment SDK. The Singular SDK will automatically track Sessions and these *Application Lifecycle Events* are not needed. 
 
 ### Requirements
-- The Singular SDK must be natively implemented in the Advertiser App. See Singular SDK documentation here: https://support.singular.net/hc/en-us/categories/360002441132
+- The Singular SDK must be natively implemented in the Advertiser App. See Singular SDK documentation: [READ MORE](https://support.singular.net/hc/en-us/categories/360002441132)
 - This solution is not to be used if you are using the Segment Device Mode Integration (SDK Wrapper).
 - The Segment Mobile SDK must be Intialized before the Singular SDK.
 - All Segment Track events must contain the additional properties which consist of the additional identifiers as illustrated below.
@@ -27,7 +27,7 @@ This solution is used for Hybrid Integrations with Segment and enables Segment t
 #### Step 1 - Add support in your Mobile Apps and Web App
 
 <details><summary>CLICK for iOS</summary>
-iOS - Implement the Segment Analytics for iOS Library per Segment's documentation here: https://segment.com/docs/connections/sources/catalog/libraries/mobile/ios/#analytics-for-ios
+iOS - Implement the Segment Analytics for iOS Library per Segment's documentation: [READ MORE](https://segment.com/docs/connections/sources/catalog/libraries/mobile/ios/#analytics-for-ios)
 
 CODE: Obj-C
 ```Obj-C
@@ -39,7 +39,7 @@ SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurat
 ```
     
 Add the IDFA, IDFV, and ATT status as Segment Track event properties for all of the Segment Track Events. 
-- See how to retrieve the IDFA and IDFV Identifiers: [[https://developer.android.com/training/articles/ad-id](https://support.singular.net/hc/en-us/articles/360037640812--UPDATED-Server-to-Server-S2S-Integration-Guide#Retrieving_the_IDFALimit_Ad_Tracking_iOS_Identifiers)
+- See how to retrieve the IDFA and IDFV Identifiers: [READ MORE](https://support.singular.net/hc/en-us/articles/360037640812--UPDATED-Server-to-Server-S2S-Integration-Guide#Retrieving_the_IDFALimit_Ad_Tracking_iOS_Identifiers)
 
 
 CODE: Obj-C
@@ -55,7 +55,7 @@ CODE: Obj-C
 </details>
 
 <details><summary>CLICK for Android</summary>
-Android - Implement the Segment Analytics for Android Library per Segment's documentation here: https://segment.com/docs/connections/sources/catalog/libraries/mobile/android/#analytics-for-android
+Android - Implement the Segment Analytics for Android Library per Segment's documentation: [READ MORE](https://segment.com/docs/connections/sources/catalog/libraries/mobile/android/#analytics-for-android)
     
 CODE: Java
 ```Java
@@ -67,9 +67,9 @@ Analytics analytics = new Analytics.Builder(getApplicationContext(), Constants.S
 ```
     
 Add the following code to your App Immediately after obtaining your Device Identifiers. This code will store the current Device Advertising Identifiers in the Segment Identify Traits in a Singular element. Retreive the Android AppSetID, and Google Advertising ID in the App prior to Segment or Singular SDK Initialization. 
-- See how to retrieve the Google Advertising Id: https://developer.android.com/training/articles/ad-id
-- See how to retrieve the AppSetId: https://developer.android.com/training/articles/app-set-id
-- See how to retrieve the Amazon Advertising Identifier (AMID): https://developer.amazon.com/docs/policy-center/advertising-id.html
+- See how to retrieve the Google Advertising Id: [READ MORE](https://developer.android.com/training/articles/ad-id)
+- See how to retrieve the AppSetId: [READ MORE](https://developer.android.com/training/articles/app-set-id)
+- See how to retrieve the Amazon Advertising Identifier (AMID): [READ MORE](https://developer.amazon.com/docs/policy-center/advertising-id.html)
 
 > **Note** 
 > Obtaining these identifiers usually requires a mmethod outside of the main thread. You may need to invoke the following Segment code in the same method.
@@ -82,9 +82,9 @@ Analytics.with(getApplicationContext()).identify(new Traits().putValue("singular
 </details>
 
 <details><summary>CLICK for Web</summary>
-Web - Implement the Segment Analytics.js Library per the Segment documentation here: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#analytics-js-2-0-source
+Web - Implement the Segment Analytics.js Library per the Segment documentation: [READ MORE](https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#analytics-js-2-0-source)
 
-Follow the Segment guide to add the Analytics.js library to your website. Read More here: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/quickstart/
+Follow the Segment guide to add the Analytics.js library to your website. [READ MORE](https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/quickstart/)
     
 CODE: Javascript
 ```Javascript
@@ -98,8 +98,8 @@ CODE: Javascript
 ```
     
 For all Web based Segment Track Events, append the following additional properties. The values can be sourced
-- singularSDID (See how to retrieve the Web SDID here: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually)
-- singularWebBundleId (This is a fixed value used in your Singular WebSDK Initialization, denoted as the "Product ID". More here: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#1_Constructing_the_SingularConfig_Object)
+- singularSDID (See how to retrieve the Web SDID: [READ MORE](https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually)
+- singularWebBundleId (This is a fixed value used in your Singular WebSDK Initialization, denoted as the "Product ID". [READ MORE](https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#1_Constructing_the_SingularConfig_Object)
 
 
 CODE: HTML
@@ -132,7 +132,7 @@ Open Segment's UI:
 - toggle on the "Required" and "Sensitive" options.
 - Click Add Setting
 
-You will be prompted to enter your Singular SDK Key from here: https://app.singular.net/?#/sdk
+You will be prompted to enter your Singular SDK Key from: [READ MORE](https://app.singular.net/?#/sdk)
 
 3. From the Functions screen Click the Function, and choose "+ Connect Destination"
 - Select the Sources for which this Destination should be enabled.
