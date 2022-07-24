@@ -1,7 +1,9 @@
-# Custom Segment Destination Function for Singular Hybrid Integrations
-Author: Jared Ornstead
-Last Update: 2022-07-24
-Contact: jared@singular.net
+# Segment Destination Function 
+A soltuion for Singular Hybrid Integrations
+
+- Author: Jared Ornstead
+- Last Update: 2022-07-24
+- Contact: jared@singular.net
 
 ## Description
 This solution is used for Hybrid Integrations with Segment and enables Segment to send Track Events to Singular using the Singular Server-to-Server REST API. It allows for the capture of custom identifiers within the advertiser App where in some instances these identifiers are not supported by the Segment Mobile Libraries, but reqired for tracking a device in the Singular platform.
