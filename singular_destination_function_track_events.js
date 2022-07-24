@@ -13,18 +13,14 @@ async function onTrack(event, settings) {
 	// Singular S2S Event EventEndpoint
 	// Singular Event API Specs here: https://support.singular.net/hc/en-us/articles/360048588672-Server-to-Server-S2S-API-Endpoint-Reference#Event_Notification_Endpoint
 	const singularEventEndpoint = 'https://s2s.singular.net/api/v1/evt?';
-	const singularSDKKEY = settings.singularSdkKey;
+	const singularSDKKEY = settings.singularSdkKey || '';
 	const singularSDKVersion = 'SegmentS2SCustomFunction';
 
 	// Define Segment Integration Type and Get Segment Key Values
 	// Note: This code only supports Track Events for Mobile and Web(JS)
 
 	const segmentIntegrationType = event.context.library.name || '';
-	console.log(segmentIntegrationType);
-	if (
-		typeof segmentIntegrationType !== 'undefined' &&
-		typeof singularSDKKEY !== 'undefined'
-	) {
+	if (segmentIntegrationType !== '' && singularSDKKEY !== '') {
 		// Singular object for all query parameters to be sent on S2S Event.
 		let params = {};
 
@@ -49,8 +45,8 @@ async function onTrack(event, settings) {
 
 		// Validation on IP Address Handling
 		// If IP Address is not included, we will fallback to the IP of the Request
-		let _ip = event.context.ip;
-		if (typeof _ip === 'undefined' || _ip === '') {
+		let _ip = event.context.ip || '';
+		if (_ip === '') {
 			params['use_ip'] = 'True';
 		} else {
 			params['ip'] = _ip;
@@ -69,21 +65,28 @@ async function onTrack(event, settings) {
 		if (segmentIntegrationType === 'analytics-ios') {
 			params['p'] = 'iOS';
 			let _idfa =
-				event.properties.singularIDFA || event.context.device.advertisingId;
-			let _idfv = event.properties.singularIDFV || event.context.device.id;
+				event.properties.singularIDFA ||
+				event.context.device.advertisingId ||
+				'';
+			let _idfv =
+				event.properties.singularIDFV || event.context.device.id || '';
 
 			// Learn more at https://segment.com/docs/connections/sources/catalog/libraries/mobile/ios/#ad-tracking-and-idfa
-			if (typeof _idfa !== 'undefined' && _idfa.length == 36) {
-				params['idfa'] = _idfa.toUpperCase();
-				params['att_authorization_status'] = '3';
-				_sDeviceId = true;
-			} else {
-				params['att_authorization_status'] = '0';
+			if (_idfa !== '') {
+				if (_idfa.length == 36) {
+					params['idfa'] = _idfa.toUpperCase();
+					params['att_authorization_status'] = '3';
+					_sDeviceId = true;
+				} else {
+					params['att_authorization_status'] = '0';
+				}
 			}
 
-			if (typeof _idfv !== 'undefined' && _idfv.length == 36) {
-				params['idfv'] = _idfv.toUpperCase();
-				_sDeviceId = true;
+			if (_idfv !== '') {
+				if (_idfv.length == 36) {
+					params['idfv'] = _idfv.toUpperCase();
+					_sDeviceId = true;
+				}
 			}
 		} else if (segmentIntegrationType === 'analytics-android') {
 			params['p'] = 'Android';
@@ -92,46 +95,58 @@ async function onTrack(event, settings) {
 			// Get Android AppSetID Identifier (ASID) see: https://developer.android.com/training/articles/app-set-id
 
 			let _gaid =
-				event.properties.singularGAID || event.context.device.advertisingId;
-			let _asid = event.properties.singularASID;
-			let _amid = event.properties.singularAMID;
-			let _oaid = event.properties.singularOAID;
+				event.properties.singularGAID ||
+				event.context.device.advertisingId ||
+				'';
+			let _asid = event.properties.singularASID || '';
+			let _amid = event.properties.singularAMID || '';
+			let _oaid = event.properties.singularOAID || '';
 
-			if (typeof _gaid !== 'undefined' && _gaid.length == 36) {
-				params['aifa'] = _gaid.toLowerCase();
-				_sDeviceId = true;
+			if (_gaid !== '') {
+				if (_gaid.length == 36) {
+					params['aifa'] = _gaid.toLowerCase();
+					_sDeviceId = true;
+				}
 			}
 
-			if (typeof _asid !== 'undefiend' && _asid.length == 36) {
-				params['asid'] = _asid.toLowerCase();
-				_sDeviceId = true;
+			if (_asid !== '') {
+				if (_asid.length == 36) {
+					params['asid'] = _asid.toLowerCase();
+					_sDeviceId = true;
+				}
 			}
 
-			if (typeof _amid !== 'undefined' && _amid.length == 36) {
-				params['amid'] = _amid.toLowerCase();
-				_sDeviceId = true;
+			if (_amid !== '') {
+				if (_amid.length == 36) {
+					params['amid'] = _amid.toLowerCase();
+					_sDeviceId = true;
+				}
 			}
 
-			if (typeof _oaid !== 'undefined' && _oaid.length == 36) {
-				params['oaid'] = _amid.toLowerCase();
-				_sDeviceId = true;
+			if (_oaid !== '') {
+				if (_oaid.length == 36) {
+					params['oaid'] = _oaid.toLowerCase();
+					_sDeviceId = true;
+				}
 			}
 		} else if (segmentIntegrationType === 'analytics.js') {
 			params['p'] = 'Web';
 
 			// Get Singular Web SDK Identifier (SDID) see: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually
-			let _sdid = event.properties.singularSDID;
-			let _webBundleID = event.properties.singularWebBundleId;
+			let _sdid = event.properties.singularSDID || '';
+			let _webBundleID = event.properties.singularWebBundleId || '';
 
-			if (typeof _webBundleID !== 'undefined') {
+			if (_webBundleID !== '') {
 				params['i'] = _webBundleID;
 			} else {
 				params['i'] = 'unknown_web_bundelId';
 			}
 
-			if (typeof _sdid !== 'undefined' && _sdid.length == 36) {
-				params['sdid'] = _sdid.toLowerCase();
-				_sDeviceId = true;
+			if (_sdid !== '') {
+				if (_sdid.length == 36) {
+					params['sdid'] = _sdid.toLowerCase();
+					_sDeviceId = true;
+				}
 			}
 		}
 
@@ -139,9 +154,9 @@ async function onTrack(event, settings) {
 		// Otherwise the event will not include revenue.
 		// Any Event with Revenue and Amount in the Properties will be sent as a Revenue event to Singular
 
-		let _revenue = event.properties.revenue;
-		let _currency = event.properties.currency;
-		if (typeof _revenue !== 'undefined' && typeof _currency !== 'undefined') {
+		let _revenue = event.properties.revenue || '';
+		let _currency = event.properties.currency || '';
+		if (_revenue !== '' && _currency !== '') {
 			params['amt'] = _revenue;
 			params['cur'] = _currency;
 			params['is_revenue_event'] = 'true';
@@ -150,10 +165,7 @@ async function onTrack(event, settings) {
 		// Pass all Segement Properties into Singular Event Arguments here.
 		let eventArgs = {};
 		let _segmentProperties = event.properties || '';
-		if (
-			typeof _segmentProperties !== 'undefined' &&
-			_segmentProperties !== ''
-		) {
+		if (_segmentProperties !== '' && _segmentProperties !== '') {
 			for (let key in _segmentProperties) {
 				eventArgs[key] = _segmentProperties[key];
 			}
