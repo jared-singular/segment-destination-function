@@ -32,15 +32,17 @@ SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurat
     [SEGAnalytics setupWithConfiguration:configuration];
 ```
     
-Add the following code to your App Immediately after the Singular SDK is Initialized. This code will store the current Device Advertising Identifiers in the Segment Identify Traits in a Singular element.
+Add the IDFA, IDFV, and ATT status as Segment Track event properties for all of the Segment Track Events. 
 
 CODE: Obj-C
 ```Obj-C
-// Set Segment Identify Traits for Singular
-    NSString *segmentAnonymousId = [[SEGAnalytics sharedAnalytics] getAnonymousId];
-    NSLog(@"Segment AnonymousId: %@", segmentAnonymousId);
-    [[SEGAnalytics sharedAnalytics]
-     identify: nil traits:@{ @"singularIDFA": self.s_idfa, @"singularIDFV": self.s_idfv, @"singularATT": self.att_state}];
+// Set Segment Properties Example
+// DO NOT CHANGE the nameing convention used in the example, as it matches the keys in the Custom Function Script.   
+[[SEGAnalytics sharedAnalytics] track:@"EventName"
+                                properties:@{ @"singularIDFA": self.s_idfa,
+                                              @"singularIDFV": self.s_idfv,
+                                              @"singularATT": self.att_state
+                                              }];
 ```
 </details>
 
