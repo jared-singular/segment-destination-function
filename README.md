@@ -119,15 +119,16 @@ You will be prompted to enter your Singular SDK Key from here:
 ### Testing
 Using the Destination Function UI in Segment and the Singular SDK Console in the Singular UI, you may test the Javascript Function.
 1. Use one of the following Sample Segment Payload for Testing. 
-2. Copy the appropriate device identifier for use in the Singular SDK Console and activate listening
-3. Click the "Run" button in the Segment UI.
-4. Wait for the Event to display in the Singular SDK Console.
+2. Update your "writeKey" in the Sample Payload
+3. Copy the appropriate device identifier for use in the Singular SDK Console and activate listening
+4. Click the "Run" button in the Segment UI.
+5. Wait for the Event to display in the Singular SDK Console.
 
 <details><summary>CLICK for iOS Sample Payload</summary>
-iOS
+
 CODE: JSON
 ```JSON
-{
+    {
   "anonymousId": "4BC485A2-2EFC-426B-A21F-3F2DEEE8B270",
   "channel": "server",
   "context": {
@@ -166,7 +167,7 @@ CODE: JSON
     "timezone": "America/Los_Angeles",
     "traits": {}
   },
-  "event": "Purchase3",
+  "event": "Purchase",
   "integrations": {},
   "messageId": "6BCEE4A2-9741-4679-90AC-5EF897A301A2",
   "originalTimestamp": "2022-07-24T15:53:44.725Z",
@@ -183,9 +184,125 @@ CODE: JSON
   "timestamp": "2022-07-24T15:53:44.970Z",
   "type": "track",
   "version": 2,
-  "writeKey": "LpH8xCmg0222jFubhT5hakE5w1fYVvhX"
+  "writeKey": "YOUR WRITE KEY"
 }
 ```
-    </details>    
+</details>  
     
-    
+<details><summary>CLICK for Android Sample Payload</summary>
+
+CODE: JSON
+```JSON
+    {
+  "anonymousId": "4BC485A2-2EFC-426B-A21F-3F2DEEE8B270",
+  "channel": "server",
+  "context": {
+    "app": {
+      "build": "1",
+      "name": "Sample ObjC",
+      "namespace": "ios.sample.app.objc",
+      "version": "2.0"
+    },
+    "device": {
+      "id": "6F9BF4A0-D7CC-475A-9918-54E04D67482B",
+      "manufacturer": "Apple",
+      "model": "iPhone12,3",
+      "name": "iPhone",
+      "type": "ios"
+    },
+    "ip": "104.220.18.50",
+    "library": {
+      "name": "analytics-ios",
+      "version": "4.1.6"
+    },
+    "locale": "en-US",
+    "network": {
+      "carrier": "T-Mobile",
+      "cellular": false,
+      "wifi": true
+    },
+    "os": {
+      "name": "iOS",
+      "version": "15.6"
+    },
+    "screen": {
+      "height": 812,
+      "width": 375
+    },
+    "timezone": "America/Los_Angeles",
+    "traits": {}
+  },
+  "event": "Purchase",
+  "integrations": {},
+  "messageId": "6BCEE4A2-9741-4679-90AC-5EF897A301A2",
+  "originalTimestamp": "2022-07-24T15:53:44.725Z",
+  "projectId": "aoh5D6cBsUUDAAW5eMH3br",
+  "properties": {
+    "singularATT": "(3) Authorized",
+    "singularIDFA": "2A4999C7-7E75-473B-A13B-8859EAE5D9C0",
+    "singularIDFV": "6F9BF4A0-D7CC-475A-9918-54E04D67482B",
+    "revenue":"29.95",
+    "currency":"USD"
+  },
+  "receivedAt": "2022-07-24T15:54:14.904Z",
+  "sentAt": "2022-07-24T15:54:14.659Z",
+  "timestamp": "2022-07-24T15:53:44.970Z",
+  "type": "track",
+  "version": 2,
+  "writeKey": "YOUR WRITE KEY"
+}
+```
+</details>  
+
+<details><summary>CLICK for Web Sample Payload</summary>
+
+CODE: JSON
+```JSON
+    {
+  "_metadata": {
+    "bundled": [
+      "Segment.io"
+    ],
+    "bundledIds": [],
+    "unbundled": []
+  },
+  "anonymousId": "5d7e9c75-cee0-4e01-9714-3db67d871caf",
+  "channel": "client",
+  "context": {
+    "campaign": {},
+    "ip": "74.125.210.177",
+    "library": {
+      "name": "analytics.js",
+      "version": "next-1.39.1"
+    },
+    "locale": "en-US",
+    "page": {
+      "path": "/render2",
+      "referrer": "https://gtm-msr.appspot.com/render?id=GTM-5M6P9MH",
+      "search": "?id=GTM-5M6P9MH",
+      "title": "gtm-msr",
+      "url": "https://gtm-msr.appspot.com/render2?id=GTM-5M6P9MH"
+    },
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36"
+  },
+  "event": "Order Completed",
+  "integrations": {},
+  "messageId": "ajs-next-fe03a1d53ce5864987388e42d40175fe",
+  "originalTimestamp": "2022-07-24T01:41:04.535Z",
+  "projectId": "je5kRCsesHUphNViZpWqtT",
+  "properties": {
+    "currency": "USD",
+    "product": "Sample",
+    "revenue": "14.99",
+    "singularSDID": "b7990740-9ca3-469d-8bde-d3d652ba035f",
+    "singularWebBundleId": "com.singular.jared"
+  },
+  "receivedAt": "2022-07-24T01:41:06.240Z",
+  "sentAt": "2022-07-24T01:41:04.554Z",
+  "timestamp": "2022-07-24T01:41:06.221Z",
+  "type": "track",
+  "userId": null,
+  "version": 2
+}
+```
+</details>  
