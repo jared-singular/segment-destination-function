@@ -4,12 +4,15 @@ Last Update: 2022-07-24
 Contact: jared@singular.net
 
 ## Description
-This solution is used for Hybrid Integrations with Segment and enables Segment to send Track Events to Singular using the Singular Server-to-Server REST API. This solution is not NOT to be used with the formal Singular integrations published on the Segment Help Center. This solution allows for the capture of custom identifiers within the advertiser App where in some instances these identifiers are not supported by the Segment Mobile Libraries. 
+This solution is used for Hybrid Integrations with Segment and enables Segment to send Track Events to Singular using the Singular Server-to-Server REST API. It allows for the capture of custom identifiers within the advertiser App where in some instances these identifiers are not supported by the Segment Mobile Libraries, but reqired for tracking a device in the Singular platform.
 
+> **Warning**
+> This solution is NOT to be used with any formal Singular Destinations published on Segment. The solution should be strictly used for custom use-cases which can not be obtained by the current Singular integration.
+ 
 > **Note**
 > Being a custom solution, this code snippet is provided as a working example and allows the developer full control to update or modify the content and behavior as desired. Singular is not responsible for maintenance of this code. The developer implementing this solution must consult the Segment and Singular documentation to troubleshoot issues if they arise. It is also the developers responsibiity to verify that only approved data is passed to Segment and then to Singular using this solution.
 
-> **Warning**
+> **Note**
 > Due to the Hybrid nature of this integration it is recommended to disable the Segment *Application Lifecycle Events*. These are disabled in the Initialization of the Segment SDK. The Singular SDK will automatically track Sessions and these *Application Lifecycle Events* are not needed. 
 
 ### Requirements
