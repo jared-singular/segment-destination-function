@@ -22,7 +22,7 @@ This solution is used for Hybrid Integrations with Segment and enables Segment t
 #### Step 1 - Add support in your Mobile Apps and Web App
 
 <details><summary>CLICK for iOS</summary>
-iOS - Implement the Segment iOS Library
+iOS - Implement the Segment Analytics for iOS Library per Segment's documentation here: https://segment.com/docs/connections/sources/catalog/libraries/mobile/ios/#analytics-for-ios
 
 CODE: Obj-C
 ```Obj-C
@@ -50,7 +50,7 @@ CODE: Obj-C
 </details>
 
 <details><summary>CLICK for Android</summary>
-Android - Implement the Segment Android Library
+Android - Implement the Segment Analytics for Android Library per Segment's documentation here: https://segment.com/docs/connections/sources/catalog/libraries/mobile/android/#analytics-for-android
     
 CODE: Java
 ```Java
@@ -77,7 +77,7 @@ Analytics.with(getApplicationContext()).identify(new Traits().putValue("singular
 </details>
 
 <details><summary>CLICK for Web</summary>
-Web - Implement the Segment Javascript Library
+Web - Implement the Segment Analytics.js Library per the Segment documentation here: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#analytics-js-2-0-source
 
 Follow the Segment guide to add the Analytics.js library to your website. Read More here: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/quickstart/
     
@@ -85,18 +85,29 @@ CODE: Javascript
 ```Javascript
 // Your Script will look something like this:
 <script>
-  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="ZaFli4dfqQyJ8BOMumCCi4ZLVLG2LOwQ";;analytics.SNIPPET_VERSION="4.15.3";
-  analytics.load("ZaFli4dfqQyJ8BOMumCCi4ZLVLG2LOwQ");
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="YOUR WRITE KEY";;analytics.SNIPPET_VERSION="4.15.3";
+  analytics.load("YOUR WRITE KEY");
   analytics.page();
   }}();
 </script>
 ```
     
-Add the following code to your App Immediately after the Singular SDK is Initialized. This code will store the current Device Advertising Identifiers in the Segment Identify Traits in a Singular element.
+For all Web based Segment Track Events, append the following additional properties. The values can be sourced
+- singularSDID (See how to retrieve the Web SDID here: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually)
+- singularWebBundleId (This is a fixed value used in your Singular WebSDK Initialization, denoted as the "Product ID". More here: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#1_Constructing_the_SingularConfig_Object)
 
-CODE: Javascript
-```Javascript
-// Coming soon
+
+CODE: HTML
+```HTML
+<script>
+  analytics.ready(function() {
+    var user = analytics.user();
+    var id = user.id();
+    var SDID = singularSdk.getSingularDeviceId();
+    var bundleId = "com.mysite.www";
+    analytics.track("Order Completed", {product: "Sample", revenue: "14.99", currency: "USD", singularSDID: SDID, singularWebBundleId: bundleId});
+  });
+</script>
 ```
 </details>
 
