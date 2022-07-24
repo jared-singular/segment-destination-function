@@ -1,24 +1,25 @@
 # Custom Segment Destination Function for Singular Hybrid Integrations
+Author: Jared Ornstead
+Last Update: 2022-07-24
+Contact: jared@singular.net
+
 ## Description
-This solution is used for Hybrid Integrations with Segment and enables Segment to send Track Events to Singular using the Singular Server-to-Server REST API. This solution is not NOT to be used with the formal Singular integrations published on the Segment Help Center. This allows for the capture of specific identifiers used by Singular's SDK in some instances which are not supported by the Segment Mobile Libraries. 
+This solution is used for Hybrid Integrations with Segment and enables Segment to send Track Events to Singular using the Singular Server-to-Server REST API. This solution is not NOT to be used with the formal Singular integrations published on the Segment Help Center. This solution allows for the capture of custom identifiers within the advertiser App where in some instances these identifiers are not supported by the Segment Mobile Libraries. 
 
 > **Note**
-> Being a custom solution, this code snippet is provided as a working example and allows the developer full control to update or modify the content and behavior as desired. Due to theflexibility of this solution, the Singular Support team is not responsible for maintenance of this code. The developer implementing this solution must consult the Segment and Singular documentation to troubleshoot issues if they arise.
+> Being a custom solution, this code snippet is provided as a working example and allows the developer full control to update or modify the content and behavior as desired. Singular is not responsible for maintenance of this code. The developer implementing this solution must consult the Segment and Singular documentation to troubleshoot issues if they arise. It is also the developers responsibiity to verify that only approved data is passed to Segment and then to Singular using this solution.
 
 > **Warning**
-> Due to the Hybrid nature of this integration it is recommended to disable the Segment *Application Lifecycle Events*. These are disabled in the Initialization of the Segment SDK. The Singular SDK will automatically track Sessions and these events are not needed.
-
-- Coming Soon: Enabling the passing of Web events to Singular.
+> Due to the Hybrid nature of this integration it is recommended to disable the Segment *Application Lifecycle Events*. These are disabled in the Initialization of the Segment SDK. The Singular SDK will automatically track Sessions and these *Application Lifecycle Events* are not needed. 
 
 ### Requirements
-- The Singular SDK must be natively implemented in the Advertiser App. This solution is not to be used if you are using the Segment Device Mode Integration.
-- The Segment Mobile SDK must be Intialized before the Singular SDK
-- Segment Track events must not be enabled until the Singular SDK is Initialized and the Identify Code snippet is invoked.
-
+- The Singular SDK must be natively implemented in the Advertiser App. See Singular SDK documentation here: https://support.singular.net/hc/en-us/categories/360002441132
+- This solution is not to be used if you are using the Segment Device Mode Integration (SDK Wrapper).
+- The Segment Mobile SDK must be Intialized before the Singular SDK.
+- All Segment Track events must contain the additional properties which consist of the additional identifiers as illustrated below.
 
 ### Implementation Steps
-#### Step 1
-Add support in your Mobile Apps and Web App
+#### Step 1 - Add support in your Mobile Apps and Web App
 
 <details><summary>CLICK for iOS</summary>
 iOS - Implement the Segment iOS Library
@@ -95,15 +96,15 @@ CODE: Javascript
 ```
 </details>
 
-#### Step 2
-Setup a Custom Destination Function in Segment
+#### Step 2 - Setup a Custom Destination Function in Segment
 
-In Segment's UI:
+Open Segment's UI:
 1. Click our your Workspace
 - Click "Catalog" in the left navigation
 - Click "Functions" in the top menu
 - Click "New Function"
 - Click "Destination" and then "Build"
+
 2. Copy the provided Javascript Function into the Function Code box
 - Click "Settings" in the top menu, and then "Add Setting"
 - Label the Setting as "Singular SDK Key"
@@ -111,7 +112,7 @@ In Segment's UI:
 - toggle on the "Required" and "Sensitive" options.
 - Click Add Setting
 
-You will be prompted to enter your Singular SDK Key from here:
+You will be prompted to enter your Singular SDK Key from here: https://app.singular.net/?#/sdk
 
 3. From the Functions screen Click the Function, and choose "+ Connect Destination"
 - Select the Sources for which this Destination should be enabled.
