@@ -34,6 +34,8 @@ SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurat
 ```
     
 Add the IDFA, IDFV, and ATT status as Segment Track event properties for all of the Segment Track Events. 
+- See how to retrieve the IDFA and IDFV Identifiers: [[https://developer.android.com/training/articles/ad-id](https://support.singular.net/hc/en-us/articles/360037640812--UPDATED-Server-to-Server-S2S-Integration-Guide#Retrieving_the_IDFALimit_Ad_Tracking_iOS_Identifiers)
+
 
 CODE: Obj-C
 ```Obj-C
@@ -60,8 +62,10 @@ Analytics analytics = new Analytics.Builder(getApplicationContext(), Constants.S
 ```
     
 Add the following code to your App Immediately after obtaining your Device Identifiers. This code will store the current Device Advertising Identifiers in the Segment Identify Traits in a Singular element. Retreive the Android AppSetID, and Google Advertising ID in the App prior to Segment or Singular SDK Initialization. 
-- See How to retreive the AppSetId: https://developer.android.com/training/articles/app-set-id
-- See how to Retrieve the Google Advertising Id: https://developer.android.com/training/articles/ad-id
+- See how to retrieve the Google Advertising Id: https://developer.android.com/training/articles/ad-id
+- See how to retrieve the AppSetId: https://developer.android.com/training/articles/app-set-id
+- See how to retrieve the Amazon Advertising Identifier (AMID): https://developer.amazon.com/docs/policy-center/advertising-id.html
+
 > **Note** 
 > Obtaining these identifiers usually requires a mmethod outside of the main thread. You may need to invoke the following Segment code in the same method.
 
