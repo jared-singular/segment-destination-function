@@ -9,182 +9,183 @@
 async function onTrack(event, settings) {
 	// Learn more at https://segment.com/docs/connections/spec/track/
 	// Common Specs: https://segment.com/docs/connections/spec/common/
+
+	// Singular S2S Event EventEndpoint
 	// Singular Event API Specs here: https://support.singular.net/hc/en-us/articles/360048588672-Server-to-Server-S2S-API-Endpoint-Reference#Event_Notification_Endpoint
+	const singularEventEndpoint = 'https://s2s.singular.net/api/v1/evt?';
+	const singularSDKKEY = settings.singularSdkKey;
+	const singularSDKVersion = 'SegmentS2SCustomFunction';
 
-	// Singular SDK API Key
-	const _sdkkey = settings.singularSdkKey;
+	// Define Segment Integration Type and Get Segment Key Values
+	// Note: This code only supports Track Events for Mobile and Web(JS)
 
-	// Singular S2S Event _sEventEndpoint
-	const _sEventEndpoint = 'https://s2s.singular.net/api/v1/evt?';
+	const segmentIntegrationType = event.context.library.name || '';
+	console.log(segmentIntegrationType);
+	if (
+		typeof segmentIntegrationType !== 'undefined' &&
+		typeof singularSDKKEY !== 'undefined'
+	) {
+		// Singular object for all query parameters to be sent on S2S Event.
+		let params = {};
 
-	// Singular object for all query parameters to be sent on S2S Event.
-	let params = {};
+		// Singular Flag used to prevent sending events without a device identifier.
+		let _sDeviceId = false;
 
-	// Singular Flag used to prevent sending events without a device identifier.
-	let _sDeviceId = false;
+		// Singular Event Timestamp used to backdate the actual event
+		// Retrieved from Segment timestamp. See how Segment defines timestamp here: https://segment.com/docs/connections/spec/common/#context
+		let _utime = event.timestamp || '';
+		if (_utime !== '') {
+			const dateToday = new Date(_utime);
+			let timestamp = Date.parse(dateToday) / 1000;
+			params['utime'] = timestamp;
+		}
 
-	// Advertising Device Identifiers
-	let _gaid = event.context.device.advertisingId || '',
-	    _idfa = event.context.traits.singularIDFA ||
-		    event.context.device.advertisingId ||
-		    '',
-	    _idfv = event.context.traits.singularIDFV || event.context.device.id || '';
+		params['a'] = singularSDKKEY;
+		params['sdk_version'] = singularSDKVersion;
+		params['custom_user_id'] = event.userId || '';
+		params['ua'] = event.context.userAgent || '';
+		params['lc'] = event.context.locale || '';
+		params['n'] = event.event || 'segment_unknown';
 
-	// Singular Device Identifiers
-	// Need to set in the App using Segment SDK once the Segement SDK Intializes. Store values in the context.singular.
-	// See:
+		// Validation on IP Address Handling
+		// If IP Address is not included, we will fallback to the IP of the Request
+		let _ip = event.context.ip;
+		if (typeof _ip === 'undefined' || _ip === '') {
+			params['use_ip'] = 'True';
+		} else {
+			params['ip'] = _ip;
+		}
 
-	// Get Amazon Advertising Identifier (AMID) see: https://developer.amazon.com/docs/policy-center/advertising-id.html
-	// Get Android AppSetID Identifier (ASID) see: https://developer.android.com/training/articles/app-set-id
-	// Get Singular Web SDK Identifier (SDID) see: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually
+		if (
+			segmentIntegrationType === 'analytics-ios' ||
+			segmentIntegrationType === 'analytics-android'
+		) {
+			params['i'] = event.context.app.namespace || 'segment.unknown.bundleId';
+			params['ve'] = event.context.os.version || '';
+			params['ma'] = event.context.device.manufacturer || '';
+			params['mo'] = event.context.device.model || '';
+		}
 
-	let _asid = event.context.traits.singularASID || '',
-	    _amid = event.context.traits.singularAMID || '',
-	    _sdid = event.context.traits.singularSDID || '',
-	    _webBundleID = event.context.traits.singularWebBundleId || '';
+		if (segmentIntegrationType === 'analytics-ios') {
+			params['p'] = 'iOS';
+			let _idfa =
+				event.properties.singularIDFA || event.context.device.advertisingId;
+			let _idfv = event.properties.singularIDFV || event.context.device.id;
 
-	// Singular Event Timestamp
-	// Used to backdate the actual event
-	// See how Segment defines timestamp here: https://segment.com/docs/connections/spec/common/#context
-	let _utime = event.timestamp || '';
-	if (_utime !== '') {
-		const dateToday = new Date(_utime);
-		let timestamp = Date.parse(dateToday) / 1000;
-		params['utime'] = timestamp;
-	}
+			// Learn more at https://segment.com/docs/connections/sources/catalog/libraries/mobile/ios/#ad-tracking-and-idfa
+			if (typeof _idfa !== 'undefined' && _idfa.length == 36) {
+				params['idfa'] = _idfa.toUpperCase();
+				params['att_authorization_status'] = '3';
+				_sDeviceId = true;
+			} else {
+				params['att_authorization_status'] = '0';
+			}
 
-	let _n = event.event || 'segment_unknown';
-	params['a'] = _sdkkey;
-	params['n'] = _n;
-	params['ve'] = event.context.os.version || '';
-	params['sdk_version'] = 'SegmentS2S_CustomFunction';
-	params['custom_user_id'] = event.userId || '';
-	params['ua'] = event.context.userAgent || '';
-	params['ma'] = event.context.device.manufacturer || '';
-	params['mo'] = event.context.device.model || '';
-	params['lc'] = event.context.locale || '';
+			if (typeof _idfv !== 'undefined' && _idfv.length == 36) {
+				params['idfv'] = _idfv.toUpperCase();
+				_sDeviceId = true;
+			}
+		} else if (segmentIntegrationType === 'analytics-android') {
+			params['p'] = 'Android';
 
-	// Handling Revenue Event - Event Names must be explictly included for the revenue to be received by Singular.
-	// Otherwise the event will not include revenue.
-	// Capture Revenue Event Amount and Currency from Segment Order Completed
+			// Get Amazon Advertising Identifier (AMID) see: https://developer.amazon.com/docs/policy-center/advertising-id.html
+			// Get Android AppSetID Identifier (ASID) see: https://developer.android.com/training/articles/app-set-id
 
-	if (_n === 'Order Completed') {
-		let _revenue = event.properties.revenue || '';
-		let _currency = event.properties.currency || '';
-		if (_revenue !== '' && _currency !== '') {
+			let _gaid =
+				event.properties.singularGAID || event.context.device.advertisingId;
+			let _asid = event.properties.singularASID;
+			let _amid = event.properties.singularAMID;
+			let _oaid = event.properties.singularOAID;
+
+			if (typeof _gaid !== 'undefined' && _gaid.length == 36) {
+				params['aifa'] = _gaid.toLowerCase();
+				_sDeviceId = true;
+			}
+
+			if (typeof _asid !== 'undefiend' && _asid.length == 36) {
+				params['asid'] = _asid.toLowerCase();
+				_sDeviceId = true;
+			}
+
+			if (typeof _amid !== 'undefined' && _amid.length == 36) {
+				params['amid'] = _amid.toLowerCase();
+				_sDeviceId = true;
+			}
+
+			if (typeof _oaid !== 'undefined' && _oaid.length == 36) {
+				params['oaid'] = _amid.toLowerCase();
+				_sDeviceId = true;
+			}
+		} else if (segmentIntegrationType === 'analytics.js') {
+			params['p'] = 'Web';
+
+			// Get Singular Web SDK Identifier (SDID) see: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually
+			let _sdid = event.properties.singularSDID;
+			let _webBundleID = event.properties.singularWebBundleId;
+
+			if (typeof _webBundleID !== 'undefined') {
+				params['i'] = _webBundleID;
+			} else {
+				params['i'] = 'unknown_web_bundelId';
+			}
+
+			if (typeof _sdid !== 'undefined' && _sdid.length == 36) {
+				params['sdid'] = _sdid.toLowerCase();
+				_sDeviceId = true;
+			}
+		}
+
+		// Handling Revenue Amount and Currency Event
+		// Otherwise the event will not include revenue.
+		// Any Event with Revenue and Amount in the Properties will be sent as a Revenue event to Singular
+
+		let _revenue = event.properties.revenue;
+		let _currency = event.properties.currency;
+		if (typeof _revenue !== 'undefined' && typeof _currency !== 'undefined') {
 			params['amt'] = _revenue;
 			params['cur'] = _currency;
 			params['is_revenue_event'] = 'true';
 		}
-	}
 
-	// Pass all Segement Properties into Singular Event Arguments here.
-	let eventArgs = {};
-	let _segmentProperties = event.properties || '';
-	if (_segmentProperties !== '') {
-		for (let x in _segmentProperties) {
-			eventArgs[x] = _segmentProperties[x];
-		}
-	}
-	eventArgs['anonymousId'] = event.anonymousId || '';
-	eventArgs['userId'] = event.userId || '';
-	params['e'] = JSON.stringify(eventArgs);
-
-	// Validation on IP Address Handling
-	// If IP Address is not included, we will fallback to the IP of the Request
-	let _ip = event.context.ip || '';
-	if (_ip === '') {
-		params['use_ip'] = 'True';
-	} else {
-		params['ip'] = _ip;
-	}
-
-	// Get Device Platform and define the Device Identifiers to use on the Request.
-	// Singular only supports Android, iOS, and Web
-	let _p = event.context.device.type || 'Web';
-	if (_p !== '') {
-		if (_p.toLowerCase() === 'android') {
-			if (_gaid && _gaid.length == 36) {
-				_gaid = _gaid.toLowerCase();
-				params['aifa'] = _gaid || '';
-				_sDeviceId = true;
-			}
-
-			if (_asid && _asid.length == 36) {
-				_asid = _asid.toLowerCase();
-				params['asid'] = _asid || '';
-				_sDeviceId = true;
-			}
-
-			if (_amid && _amid.length == 36) {
-				_amid = _amid.toLowerCase();
-				params['amid'] = _amid || '';
-				_sDeviceId = true;
-			}
-			params['i'] = event.context.app.namespace || 'segment.unknown.bundleId';
-			params['p'] = 'Android';
-		} else if (_p.toLowerCase() === 'ios') {
-			// Learn more at https://segment.com/docs/connections/sources/catalog/libraries/mobile/ios/#ad-tracking-and-idfa
-			if (_idfa && _idfa.length == 36) {
-				_idfa = _idfa.toUpperCase();
-				params['idfa'] = _idfa || '';
-				_sDeviceId = true;
-			}
-
-			if (_idfv && _idfv.length == 36) {
-				_idfv = _idfv.toUpperCase();
-				params['idfv'] = _idfv || '';
-				_sDeviceId = true;
-			}
-			params['i'] = event.context.app.namespace || 'segment.unknown.bundleId';
-			params['p'] = 'iOS';
-			let adTrackingEnabled = event.context.device.adTrackingEnabled;
-			if (adTrackingEnabled !== true) {
-				params['att_authorization_status'] = '0';
-			} else {
-				params['att_authorization_status'] = '3';
-			}
-		} else {
-			if (_sdid !== '' && _webBundleID !== '') {
-				if (_sdid && _sdid.length == 36) {
-					_sdid = _sdid.toLowerCase();
-					params['sdid'] = _sdid;
-					_sDeviceId = true;
-				}
-
-				_i = event.context.page.url;
-				if (_i.indexOf('http:') !== -1) {
-					_i = _i.split('/')[2];
-				}
-				params['i'] = _webBundleID;
-				params['p'] = 'Web';
+		// Pass all Segement Properties into Singular Event Arguments here.
+		let eventArgs = {};
+		let _segmentProperties = event.properties || '';
+		if (
+			typeof _segmentProperties !== 'undefined' &&
+			_segmentProperties !== ''
+		) {
+			for (let key in _segmentProperties) {
+				eventArgs[key] = _segmentProperties[key];
 			}
 		}
-	}
+		eventArgs['anonymousId'] = event.anonymousId || '';
+		eventArgs['userId'] = event.userId || '';
+		params['e'] = JSON.stringify(eventArgs);
 
-	let query = Object.keys(params)
-		.map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-		.join('&');
-	let url = _sEventEndpoint + query;
-	console.log(url);
+		if (_sDeviceId === true) {
+			let query = Object.keys(params)
+				.map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+				.join('&');
+			let url = singularEventEndpoint + query;
+			console.log(url);
 
-	if (_sDeviceId === true) {
-		let response;
+			let response;
 
-		try {
-			response = await fetch(url, {
-				method: 'GET'
-				//headers: {'Content-Type': 'application/json'},
-				//body: JSON.stringify(event)
-			});
-		} catch (error) {
-			// Retry on connection error
-			throw new RetryError(error.message);
-		}
+			try {
+				response = await fetch(url, {
+					method: 'GET'
+					//headers: {'Content-Type': 'application/json'},
+					//body: JSON.stringify(event)
+				});
+			} catch (error) {
+				// Retry on connection error
+				throw new RetryError(error.message);
+			}
 
-		if (response.status >= 500 || response.status === 429) {
-			// Retry on 5xx (server errors) and 429s (rate limits)
-			throw new RetryError(`Failed with ${response.status}`);
+			if (response.status >= 500 || response.status === 429) {
+				// Retry on 5xx (server errors) and 429s (rate limits)
+				throw new RetryError(`Failed with ${response.status}`);
+			}
 		}
 	}
 }
