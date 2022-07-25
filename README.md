@@ -125,7 +125,7 @@ Open Segment's UI:
 - Click "New Function"
 - Click "Destination" and then "Build"
 
-2. Copy the provided Javascript Function into the Function Code box
+2. Copy the provided [Javascript Function](https://github.com/jared-singular/segment-destination-function/blob/main/destination_function.js) into the Function Code box
 - Click "Settings" in the top menu, and then "Add Setting"
 - Label the Setting as "Singular SDK Key"
 - Leave the Type set to "String"
