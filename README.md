@@ -45,7 +45,7 @@ Add the IDFA, IDFV, and ATT status as Segment Track event properties for all of 
 CODE: Obj-C
 ```Obj-C
 // Set Segment Properties Example
-// DO NOT CHANGE the nameing convention used in the example, as it matches the keys in the Custom Function Script.   
+// DO NOT CHANGE the naming convention used in the example, as it matches the keys in the Custom Function Script.   
 [[SEGAnalytics sharedAnalytics] track:@"EventName"
                                 properties:@{ @"singularIDFA": self.s_idfa,
                                               @"singularIDFV": self.s_idfv,
@@ -66,18 +66,25 @@ Analytics analytics = new Analytics.Builder(getApplicationContext(), Constants.S
                 .build();
 ```
     
-Add the following code to your App Immediately after obtaining your Device Identifiers. This code will store the current Device Advertising Identifiers in the Segment Identify Traits in a Singular element. Retreive the Android AppSetID, and Google Advertising ID in the App prior to Segment or Singular SDK Initialization. 
+Add the required code to your App to obtain needed data points or Device Identifiers. You must store the Device Identifiers inorder to access them on future Segment Track Events. Retreive the Android AppSetID, and Google Advertising ID in the App prior to Segment or Singular SDK Initialization. 
 - See how to retrieve the Google Advertising Id: [READ MORE](https://developer.android.com/training/articles/ad-id)
 - See how to retrieve the AppSetId: [READ MORE](https://developer.android.com/training/articles/app-set-id)
 - See how to retrieve the Amazon Advertising Identifier (AMID): [READ MORE](https://developer.amazon.com/docs/policy-center/advertising-id.html)
 
-> **Note** 
-> Obtaining these identifiers usually requires a mmethod outside of the main thread. You may need to invoke the following Segment code in the same method.
+Once you have the data points required, simply include the values in the properties of any Segment Track Event. See the example below on how the GAID and ASID are included.
 
 CODE: Java
 ```Java
-Analytics.with(getApplicationContext()).identify(new Traits().putValue("singularGAID",GAID));
-Analytics.with(getApplicationContext()).identify(new Traits().putValue("singularASID",ASID));
+// GAID = the Google Advertising ID
+// ASID = the Android AppSet ID
+// The destination function will also support the AMID (Amazon ID) and the OAID (Specific for China).
+//
+Analytics.with(context).track("Bookmarked Article", new Properties()
+  .putValue("title", "Snow Fall")
+  .putValue("subtitle", "The Avalance at Tunnel Creek")
+  .putValue("author", "John Branch")
+  .putValue("singularGAID",GAID)
+  .putValue("singularASID",ASID));
 ```
 </details>
 
@@ -97,7 +104,7 @@ CODE: Javascript
 </script>
 ```
     
-For all Web based Segment Track Events, append the following additional properties. The values can be sourced
+For all Web based Segment Track Events, append the following additional properties.
 - singularSDID (See how to retrieve the Web SDID: [READ MORE](https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually)
 - singularWebBundleId (This is a fixed value used in your Singular WebSDK Initialization, denoted as the "Product ID". [READ MORE](https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#1_Constructing_the_SingularConfig_Object)
 
