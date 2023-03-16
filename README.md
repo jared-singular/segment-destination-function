@@ -2,14 +2,14 @@
 A soltuion for Singular Hybrid Integrations
 
 - Author: Jared Ornstead
-- Last Update: 2022-07-27
+- Last Update: 2023-03-16
 - Contact: jared@singular.net
 
 ## Description
 This solution is used for Hybrid Integrations with Segment and enables Segment to send Track Events to Singular using the Singular Server-to-Server REST API. It allows for the capture of custom data points within the advertiser App where in some instances these data points are not supported by the Segment Mobile Libraries. 
 
 > **Warning**
-> This solution is NOT to be used with any formal Singular Destinations published on Segment. The solution should be strictly used for custom use-cases which can not be obtained by the current Singular integration. This solution utilizes Segment's FUnctions feature which is available to all Segment customer plan types with a free allotment of usage hours. Read more about [Functions usage limits](https://segment.com/docs/connections/functions/usage/), or see [your workspace’s Functions usage stats](https://app.segment.com/goto-my-workspace/settings/usage?metric=functions).
+> This solution is NOT to be used with any formal Singular Destinations published on Segment. The solution should be strictly used for custom use-cases which can not be obtained by the current Singular integration. This solution utilizes Segment's Destination Function feature which is available to all Segment customer plan types with a free allotment of usage hours. Read more about [Functions usage limits](https://segment.com/docs/connections/functions/usage/), or see [your workspace’s Functions usage stats](https://app.segment.com/goto-my-workspace/settings/usage?metric=functions).
  
 > **Note**
 > Being a custom solution, this code snippet is provided as a working example and allows the developer full control to update or modify the content and behavior as desired. Singular is not responsible for maintenance of this code. The developer implementing this solution must consult the Segment and Singular documentation to troubleshoot issues if they arise. It is also the developers responsibiity to verify that only approved data is passed to Segment and then to Singular using this solution.
