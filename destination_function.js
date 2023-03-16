@@ -20,6 +20,7 @@ async function onTrack(event, settings) {
 	// Note: This code only supports Track Events for Mobile and Web(JS)
 
 	const segmentIntegrationType = event.context.library.name || '';
+    
 	if (segmentIntegrationType !== '' && singularSDKKEY !== '') {
 		// Singular object for all query parameters to be sent on S2S Event.
 		let params = {};
@@ -45,6 +46,7 @@ async function onTrack(event, settings) {
 
 		// Validation on IP Address Handling
 		// If IP Address is not included, we will fallback to the IP of the Request
+		
 		let _ip = event.context.ip || '';
 		if (_ip === '') {
 			params['use_ip'] = 'True';
@@ -54,15 +56,17 @@ async function onTrack(event, settings) {
 
 		if (
 			segmentIntegrationType === 'analytics-ios' ||
-			segmentIntegrationType === 'analytics-android'
+			segmentIntegrationType === 'analytics-android' ||
+			segmentIntegrationType === 'segment-python'
 		) {
 			params['i'] = event.context.app.namespace || 'segment.unknown.bundleId';
 			params['ve'] = event.context.os.version || '';
 			params['ma'] = event.context.device.manufacturer || '';
 			params['mo'] = event.context.device.model || '';
 		}
-
-		if (segmentIntegrationType === 'analytics-ios') {
+    
+		if (segmentIntegrationType === 'analytics-ios' ||
+			event.context.device.type.toLowerCase() === 'ios') {
 			params['p'] = 'iOS';
 			let _idfa =
 				event.properties.singularIDFA ||
@@ -88,8 +92,12 @@ async function onTrack(event, settings) {
 					_sDeviceId = true;
 				}
 			}
-		} else if (segmentIntegrationType === 'analytics-android') {
-			params['p'] = 'Android';
+		} else if (
+			segmentIntegrationType === 'analytics-android' ||
+			event.context.device.type.toLowerCase() === 'android'
+		) {
+			
+      params['p'] = 'Android';
 
 			// Get Amazon Advertising Identifier (AMID) see: https://developer.amazon.com/docs/policy-center/advertising-id.html
 			// Get Android AppSetID Identifier (ASID) see: https://developer.android.com/training/articles/app-set-id
@@ -132,7 +140,9 @@ async function onTrack(event, settings) {
 		} else if (segmentIntegrationType === 'analytics.js') {
 			params['p'] = 'Web';
 
-			// Get Singular Web SDK Identifier (SDID) see: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually
+			// Get Singular Web SDK Identifier (SDID) 
+			// More: https://support.singular.net/hc/en-us/articles/360039991491-Singular-Website-SDK-Native-Integration#Method_B_Advanced_Set_Singular_Device_ID_Manually
+			
 			let _sdid = event.properties.singularSDID || '';
 			let _webBundleID = event.properties.singularWebBundleId || '';
 
@@ -152,10 +162,12 @@ async function onTrack(event, settings) {
 
 		// Handling Revenue Amount and Currency Event
 		// Otherwise the event will not include revenue.
-		// Any Event with Revenue and Amount in the Properties will be sent as a Revenue event to Singular
+		// Any Event with Revenue and Currency in the Properties will be sent as a Revenue event to Singular
+    		// Revenue and Currency are part of the standard ecommerce requirements
+		// More: https://segment.com/docs/connections/spec/ecommerce/v2/#order-completed
 
 		let _revenue = event.properties.revenue || '';
-		let _currency = event.properties.currency || '';
+		let _currency =	event.properties.currency ||'';
 		if (_revenue !== '' && _currency !== '') {
 			params['amt'] = _revenue;
 			params['cur'] = _currency;
